@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#68764f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="يومي بتوازن">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>يومي بتوازن</title>
+<style>
+:root{--olive:#68764f;--olive2:#48583b;--cream:#f4f1e8;--paper:#fffdf7;--sand:#e8e4d7;--ink:#3d4737;--muted:#7e806f;--line:#e2dfd3;--rose:#a8786d;--shadow:0 8px 24px #39442a12}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);font-size:15px}
+main{max-width:620px;margin:auto;padding:18px 15px 38px}.top{display:flex;justify-content:space-between;align-items:center;margin:8px 2px 18px}.eyebrow{font-size:11px;letter-spacing:1.3px;color:var(--olive);font-weight:800}.brand{font-size:27px;font-weight:800;margin:4px 0}.sub{font-size:13px;color:var(--muted)}.leaf{width:48px;height:48px;border-radius:17px;background:#e2e7d8;display:grid;place-items:center;font-size:25px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:16px;margin:12px 0;box-shadow:var(--shadow)}.progress-head{display:flex;justify-content:space-between;align-items:center;font-weight:700}.percent{font-size:23px;color:var(--olive)}.track{height:9px;border-radius:99px;background:#e7e4d9;overflow:hidden;margin:10px 0 7px}.bar{height:100%;width:0;background:var(--olive);border-radius:99px;transition:width .2s}.small{font-size:12px;color:var(--muted)}
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-top:10px}.day{border:1px solid var(--line);background:#f5f3ec;color:var(--ink);border-radius:12px;padding:10px 2px;font-size:12px;font-weight:700}.day.active{background:var(--olive);border-color:var(--olive);color:white}.section-title{font-weight:800;font-size:16px;margin:4px 0 12px;display:flex;justify-content:space-between;align-items:center}.pill{font-size:11px;background:#e8ecdf;color:var(--olive2);padding:5px 9px;border-radius:30px}
+.priority{background:#eef0e7;border-radius:15px;padding:12px;margin:8px 0}.priority h3{margin:0 0 8px;font-size:14px}.priority-row{display:flex;align-items:center;gap:8px;padding:7px 0}.priority-row input{accent-color:var(--olive);width:18px;height:18px}.priority-row input[type=text]{flex:1;width:100%;border:1px solid #d8ddce;border-radius:9px;padding:9px;background:#fffdf7;color:var(--ink);font:inherit}
+.task{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding:12px 0}.task:last-child{border:0}.task input[type=checkbox]{width:19px;height:19px;accent-color:var(--olive)}.task.done .task-name{text-decoration:line-through;color:#99998d}.time{font-size:11px;color:var(--olive);font-weight:800;margin-bottom:3px}.task-name{font-size:14px;font-weight:650}.category{font-size:11px;color:var(--muted);margin-top:3px}.actions{display:flex;gap:4px}.iconbtn{border:0;background:transparent;color:var(--muted);font-size:17px;padding:6px;cursor:pointer}
+button{font:inherit;cursor:pointer}.primary{width:100%;background:var(--olive);color:white;border:0;border-radius:13px;padding:13px;font-weight:750}.secondary{background:#edf0e7;color:var(--olive2);border:1px solid #dce2d2;border-radius:12px;padding:10px 12px;font-weight:650}.danger{color:var(--rose)}.formgrid{display:grid;grid-template-columns:1fr 105px;gap:8px}.field{width:100%;border:1px solid var(--line);background:#fffefa;border-radius:12px;padding:12px;color:var(--ink);font:inherit;min-width:0}.field:focus{outline:2px solid #b5c09f}.formrow{display:flex;gap:8px;margin-top:8px}.formrow select{flex:1}.formrow button{white-space:nowrap}.mutedbox{background:#f0eee5;border-radius:14px;padding:12px;color:var(--muted);font-size:12px;line-height:1.7}.footer{text-align:center;color:var(--muted);font-size:11px;padding:15px 0}.hidden{display:none!important}
+@media(min-width:520px){main{padding-top:28px}.day{font-size:13px}}
+</style>
+</head>
+<body>
+<main>
+<header class="top"><div><div class="eyebrow">MY PERSONAL PLANNER</div><div class="brand">يومي بتوازن 🌿</div><div class="sub">خطوات صغيرة… وراحة أكبر</div></div><div class="leaf">🌿</div></header>
+<section class="card">
+ <div class="progress-head"><span>إنجاز اليوم</span><span class="percent" id="percent">0%</span></div>
+ <div class="track"><div class="bar" id="bar"></div></div><div class="small" id="progressText">0 من 0 مهام مكتملة</div>
+</section>
+<section class="card">
+ <div class="section-title">أسبوعي <span class="small">اختاري يوماً لعرض مهامه</span></div>
+ <div class="days" id="days"></div>
+</section>
+<section class="card">
+ <div class="section-title"><span id="dayTitle">برنامج اليوم</span><span class="pill" id="taskCount">0 مهمة</span></div>
+ <div class="priority"><h3>⭐ أهم 3 أولويات اليوم</h3><div id="priorities"></div><div class="small">يمكنك تعديل الأولويات الثلاث حسب ظروفك.</div></div>
+ <div id="tasks"></div>
+</section>
+<section class="card">
+ <div class="section-title">إضافة مهمة</div>
+ <input class="field" id="newTitle" placeholder="مثلاً: المشي لمدة 20 دقيقة">
+ <div class="formrow">
+  <input class="field" id="newTime" type="time" value="19:30" aria-label="الوقت">
+  <select class="field" id="newCategory"><option>شخصي</option><option>المنزل</option><option>العائلة</option><option>عمل</option><option>رياضة</option></select>
+ </div>
+ <button class="primary" id="addBtn" style="margin-top:10px">＋ إضافة إلى اليوم</button>
+</section>
+<section class="card">
+ <div class="section-title">إدارة البرنامج</div>
+ <button class="secondary" id="moveBtn">↪ نقل المهام غير المنجزة إلى اليوم التالي</button>
+ <div class="formrow">
+  <button class="secondary" id="exportBtn">تصدير نسخة احتياطية</button>
+  <button class="secondary" id="importBtn">استيراد نسخة</button>
+  <input type="file" id="importFile" accept="application/json" class="hidden">
+ </div>
+ <p class="small">تُحفظ التعديلات على هذا الجهاز وفي هذا المتصفح. احتفظي بنسخة احتياطية من وقت لآخر.</p>
+</section>
+<section class="mutedbox">جدولك المقترح: الاستيقاظ 06:30 والنوم 22:30. أيام العمل من الاثنين إلى الجمعة، والأربعاء عن بُعد. خصصي 15 دقيقة فقط للمنزل يومياً، ومرتين أسبوعياً للحركة أو الرياضة. عدّلي البرنامج بما يناسب أسبوعك الحقيقي.</section>
+<div class="footer">يومي بتوازن · صُمّم ليخفف عنك لا ليزيد مهامك 🤍</div>
+</main>
+<script>
+const dayNames=["الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت","الأحد"];
+const weekday=[
+["06:30","الاستيقاظ وترتيب السرير","شخصي"],["06:40","العناية الصباحية","شخصي"],["06:50","تحضير الفطور","المنزل"],["07:10","تجهيز الأطفال","العائلة"],["07:40","ترتيب سريع للمطبخ","المنزل"],["08:00","العمل والتركيز على الأولويات","عمل"],["10:30","استراحة قصيرة وحركة","شخصي"],["12:30","الغداء والاستراحة","شخصي"],["18:30","العودة وتغيير الملابس","شخصي"],["19:00","تحضير العشاء وتناوله","المنزل"],["19:30","ترتيب المنزل – 15 دقيقة","المنزل"],["20:00","وقت مع الأطفال","العائلة"],["21:00","تحضير أغراض الغد","المنزل"],["21:30","استرخاء وقراءة أو عناية بالنفس","شخصي"],["22:30","النوم","شخصي"]];
+function seed(day,i){let rows=weekday.map(x=>[...x]);if(i===1)rows.splice(8,rows.length-8,...[["18:30","العودة والاستراحة","شخصي"],["19:00","العشاء","المنزل"],["19:30","Pilates أو مشي خفيف – 25 دقيقة","رياضة"],["20:00","وقت مع الأطفال","العائلة"],["20:30","ترتيب المنزل – 15 دقيقة","المنزل"],["21:00","تحضير الغد","المنزل"],["21:30","استرخاء وعناية بالنفس","شخصي"],["22:30","النوم","شخصي"]]);if(i===2)return [["06:30","الاستيقاظ والعناية الصباحية","شخصي"],["06:50","تحضير الفطور","المنزل"],["07:10","تجهيز الأطفال","العائلة"],["07:40","ترتيب المطبخ","المنزل"],["08:00","بدء العمل عن بُعد","عمل"],["10:30","استراحة وحركة قصيرة","شخصي"],["12:30","الغداء","شخصي"],["13:00","استئناف العمل","عمل"],["17:00","إنهاء العمل وتنظيم المكتب","عمل"],["17:15","ترتيب المنزل – 15 دقيقة","المنزل"],["18:00","تحضير العشاء","المنزل"],["19:00","وقت مع الأطفال","العائلة"],["20:30","نشاط هادئ أو قراءة","شخصي"],["21:30","تحضير الغد والاسترخاء","شخصي"],["22:30","النوم","شخصي"]];if(i===3)rows[10]=["19:30","ترتيب الغسيل أو الملابس – 15 دقيقة","المنزل"];if(i===4)rows=weekday.slice(0,8).concat([["18:30","العودة والاستراحة","شخصي"],["19:00","العشاء العائلي","العائلة"],["19:30","ترتيب المنزل – 15 دقيقة","المنزل"],["20:00","أمسية عائلية أو فيلم","العائلة"],["21:30","وقت حر","شخصي"],["22:30","النوم","شخصي"]]);if(i===5)return [["07:30","الاستيقاظ والفطور بهدوء","شخصي"],["08:30","ترتيب سريع للمطبخ","المنزل"],["09:00","التسوق أو قضاء الحاجات","المنزل"],["10:30","ترتيب منطقة واحدة – 15 دقيقة","المنزل"],["11:00","نشاط عائلي أو خروج","العائلة"],["13:00","الغداء","المنزل"],["14:00","راحة ووقت حر","شخصي"],["16:30","سباحة أو Pilates أو مشي","رياضة"],["18:00","وقت مع الأطفال","العائلة"],["19:30","العشاء","المنزل"],["21:00","استرخاء وعناية بالنفس","شخصي"],["22:30","النوم","شخصي"]];if(i===6)return [["07:30","الاستيقاظ والفطور","شخصي"],["08:30","ترتيب المنزل – 15 دقيقة","المنزل"],["09:00","وقت عائلي ونشاط مريح","العائلة"],["11:00","تحضير احتياجات الأسبوع","المنزل"],["13:00","الغداء العائلي","العائلة"],["14:00","راحة ووقت شخصي","شخصي"],["16:00","تحضير الملابس والحقائب","المنزل"],["17:00","مراجعة المواعيد والمهام القادمة","شخصي"],["18:00","العشاء","المنزل"],["19:00","وقت مع الأطفال","العائلة"],["20:30","تحضير الاثنين والاسترخاء","شخصي"],["22:00","الاستعداد للنوم","شخصي"]];return rows}
+const todayIndex=(new Date().getDay()+6)%7;
+let state=load()||{selected:todayIndex,tasks:dayNames.flatMap((d,i)=>seed(d,i).map((r,j)=>({id:`${i}-${j}`,day:i,time:r[0],title:r[1],category:r[2],done:false}))),priorities:{}};
+function load(){try{return JSON.parse(localStorage.getItem("yawmiBalanceV1"))}catch(e){return null}}
+function save(){localStorage.setItem("yawmiBalanceV1",JSON.stringify(state))}
+function getPriorities(){let k=state.selected;if(!state.priorities[k]){let candidates=state.tasks.filter(t=>t.day===k&&!t.done);let chosen=[candidates.find(t=>t.category==="عمل"),candidates.find(t=>t.category==="المنزل"),candidates.find(t=>t.category==="العائلة")].filter(Boolean);while(chosen.length<3&&candidates.length){let x=candidates.find(t=>!chosen.includes(t));if(!x)break;chosen.push(x)}state.priorities[k]=[0,1,2].map(i=>chosen[i]?.title||["أهم مهمة اليوم","العناية بنفسي","وقت مع العائلة"][i])}return state.priorities[k]}
+function render(){let d=state.selected;document.getElementById("days").innerHTML=dayNames.map((n,i)=>`<button class="day ${i===d?"active":""}" data-day="${i}">${n.slice(0,3)}</button>`).join("");document.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{state.selected=+b.dataset.day;save();render()});let list=state.tasks.filter(t=>t.day===d).sort((a,b)=>String(a.time).localeCompare(String(b.time)));let done=list.filter(t=>t.done).length;let pct=list.length?Math.round(done/list.length*100):0;document.getElementById("percent").textContent=pct+"%";document.getElementById("bar").style.width=pct+"%";document.getElementById("progressText").textContent=`${done} من ${list.length} مهام مكتملة`;document.getElementById("dayTitle").textContent="برنامج "+dayNames[d];document.getElementById("taskCount").textContent=list.length+" مهمة";
+let ps=getPriorities();document.getElementById("priorities").innerHTML=ps.map((p,i)=>`<div class="priority-row"><input type="checkbox" aria-label="إنجاز الأولوية ${i+1}"><input type="text" data-priority="${i}" value="${esc(p)}"></div>`).join("");document.querySelectorAll("[data-priority]").forEach(x=>x.onchange=()=>{state.priorities[d][+x.dataset.priority]=x.value;save()});
+document.getElementById("tasks").innerHTML=list.map(t=>`<div class="task ${t.done?"done":""}"><input type="checkbox" data-check="${esc(t.id)}" ${t.done?"checked":""}><div><div class="time">${esc(t.time)}</div><div class="task-name">${esc(t.title)}</div><div class="category">${esc(t.category)}</div></div><div class="actions"><button class="iconbtn" data-edit="${esc(t.id)}" aria-label="تعديل">✎</button><button class="iconbtn danger" data-del="${esc(t.id)}" aria-label="حذف">×</button></div></div>`).join("");
+document.querySelectorAll("[data-check]").forEach(x=>x.onchange=()=>{let t=state.tasks.find(t=>t.id===x.dataset.check);t.done=x.checked;save();render()});
+document.querySelectorAll("[data-del]").forEach(x=>x.onclick=()=>{if(confirm("حذف هذه المهمة؟")){state.tasks=state.tasks.filter(t=>t.id!==x.dataset.del);save();render()}});
+document.querySelectorAll("[data-edit]").forEach(x=>x.onclick=()=>{let t=state.tasks.find(t=>t.id===x.dataset.edit);let title=prompt("تعديل اسم المهمة",t.title);if(title===null)return;let time=prompt("تعديل الوقت (مثلاً 19:30)",t.time);if(time===null)return;t.title=title.trim()||t.title;t.time=time.trim()||t.time;save();render()});
+save()}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+document.getElementById("addBtn").onclick=()=>{let title=document.getElementById("newTitle").value.trim();if(!title)return;state.tasks.push({id:"u"+Date.now(),day:state.selected,time:document.getElementById("newTime").value||"20:00",title,category:document.getElementById("newCategory").value,done:false});document.getElementById("newTitle").value="";save();render()};
+document.getElementById("moveBtn").onclick=()=>{let from=state.selected,to=(from+1)%7;let pending=state.tasks.filter(t=>t.day===from&&!t.done);if(!pending.length){alert("لا توجد مهام متبقية لنقلها.");return}if(!confirm(`نقل ${pending.length} مهام غير منجزة إلى ${dayNames[to]}؟`))return;pending.forEach((t,i)=>{state.tasks.push({...t,id:t.id+"-m"+Date.now()+i,day:to,time:"مؤجلة"})});state.tasks=state.tasks.filter(t=>!(t.day===from&&!t.done));state.selected=to;save();render()};
+document.getElementById("exportBtn").onclick=()=>{let blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="yawmi-backup.json";a.click();URL.revokeObjectURL(a.href)};
+document.getElementById("importBtn").onclick=()=>document.getElementById("importFile").click();
+document.getElementById("importFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let x=JSON.parse(await f.text());if(!Array.isArray(x.tasks))throw 0;state=x;save();render();alert("تم استيراد النسخة الاحتياطية.")}catch(err){alert("تعذر قراءة ملف النسخة الاحتياطية.")}};
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+render();
+</script>
+</body></html>
